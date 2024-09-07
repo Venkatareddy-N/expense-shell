@@ -15,14 +15,26 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
-echo -e "Logs file is : $G $LOG_FILE $N and user id is : $R $USER_ID $N"
-
 CHECK_ROOT(){
     if [ $USER_ID -ne 0 ]
     then
         echo -e "$R please run script with root user $N" | tee -a $LOG_FILE
-        exit 1 # exit running script
+        exit 1 # exit running script 
     fi
 }
 
 CHECK_ROOT
+
+VALIDATE(){
+    if [ $1 -ne 0 ]
+    then    
+        echo "$2 is FAILED"
+        exit 1
+    else
+        echo "$2 is SUCCESS"
+    fi
+}
+
+dnf install mysql-server -y
+VALIDATE $1 "Installing mysql "
+
