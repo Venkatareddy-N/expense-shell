@@ -18,11 +18,11 @@ N="\e[0m"
 echo -e "Logs file is : $G $LOG_FILE $N and user id is : $R $USER_ID $N"
 
 CHECK_ROOT(){
-    if [ $USER_ID -ne 0]
+    if [ $USERID -ne 0 ]
     then
-        echo -e "$R please run script with root user $N" | tee -a $LOG_FILE
-        exit 1 # exit running script
-    if
+        echo -e "$R Please run this script with root priveleges $N" | tee -a $LOG_FILE
+        exit 1
+    fi
 }
 
 CHECK_ROOT
