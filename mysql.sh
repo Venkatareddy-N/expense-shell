@@ -22,6 +22,7 @@ CHECK_ROOT(){
     then
         echo -e "$R please run script with root user $N" | tee -a $LOG_FILE
         exit 1 # exit running script
+    if
 }
 
 CHECK_ROOT
