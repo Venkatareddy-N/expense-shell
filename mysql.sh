@@ -27,14 +27,14 @@ CHECK_ROOT
 
 VALIDATE(){
     if [ $1 -ne 0 ]
-    then    
-        echo -e "$2 is $R FAILED $N" | tee -a $LOG_FILE
+    then
+        echo -e "$2 is...$R FAILED $N"  | tee -a $LOG_FILE
         exit 1
     else
-        echo -e "$2 is $G SUCCESS $N" | tee -a $LOG_FILE
+        echo -e "$2 is... $G SUCCESS $N" | tee -a $LOG_FILE
     fi
 }
 
 dnf install mysql-server -y
-VALIDATE $1 "Installing mysql "
+VALIDATE $1 "Installing mysql"
 
