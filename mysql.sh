@@ -7,7 +7,12 @@ LOG_FILE=$LOGS_FOLDER/$SCRIPT_NAME-$TIME_STAMP.log
 
 mkdir -p $LOGS_FOLDER # -p if dir not there it will create 
 
-
 USER_ID=$(id -u) # 0-for root user
 
-echo "Logs file is : $LOG_FILE and user id is : $USER_ID"
+#COLOR Codes
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+N="\e[0m"
+
+echo -e "Logs file is : $G $LOG_FILE $N and user id is : $R $USER_ID $N"
