@@ -1,25 +1,19 @@
 #!/bin/bash
 
-LOGS_FOLDER="/var/log/shell-script"
+LOGS_FOLDER="/var/log/expense"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIMESTAMP.log"
 mkdir -p $LOGS_FOLDER
 
-USER_ID=$(id -u)
-
+USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
-Y="\e[33m"
 N="\e[0m"
-
-USAGE(){
-    echo -e "$R USAGE:: $N sudo sh $0 package1 package2 ..."
-    exit 1
-}
+Y="\e[33m"
 
 CHECK_ROOT(){
-    if [ $USER_ID -ne 0 ]
+    if [ $USERID -ne 0 ]
     then
         echo -e "$R Please run this script with root priveleges $N" | tee -a $LOG_FILE
         exit 1
@@ -29,14 +23,36 @@ CHECK_ROOT(){
 VALIDATE(){
     if [ $1 -ne 0 ]
     then
-        echo -e "$2 is $R FAILED $N check it"
+        echo -e "$2 is...$R FAILED $N"  | tee -a $LOG_FILE
         exit 1
     else
-        echo -e "$2 is $G SUCCESS $N"
+        echo -e "$2 is... $G SUCCESS $N" | tee -a $LOG_FILE
     fi
 }
 
+echo "Script started executing at: $(date)" | tee -a $LOG_FILE
+
 CHECK_ROOT
 
-dnf install mysql-server -y
-VALIDATE $1 "Installing mysql-server"
+dnf install mysql-server -y &>>$LOG_FILE
+VALIDATE $? "Installing MySQL Server"
+
+systemctl enable mysqld &>>$LOG_FILE
+VALIDATE $? "Enabled MySQL Server"
+
+systemctl start mysqld &>>$LOG_FILE
+VALIDATE $? "Started MySQL server"
+
+mysql -h mysql.daws81s.online -u root -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE
+if [ $? -ne 0 ]
+then
+    echo "MySQL root password is not setup, setting now" &>>$LOG_FILE
+    mysql_secure_installation --set-root-pass ExpenseApp@1
+    VALIDATE $? "Setting UP root password"
+else
+    echo -e "MySQL root password is already setup...$Y SKIPPING $N" | tee -a $LOG_FILE
+fi
+
+# Assignment
+# check MySQL Server is installed or not, enabled or not, started or not
+# implement the above things
