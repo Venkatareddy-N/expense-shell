@@ -19,7 +19,7 @@ CHECK_ROOT(){
     if [ $USER_ID -ne 0 ]
     then
         echo -e "$R please run script with root user $N" | tee -a $LOG_FILE
-        exit 1 # exit running script 
+        exit 1 # exit running script form this point
     fi
 }
 
@@ -29,7 +29,7 @@ VALIDATE(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 is...$R FAILED $N"  | tee -a $LOG_FILE
-        exit 1
+        exit 1 # exit running script form this point
     else
         echo  "$2 is... SUCCESS" | tee -a $LOG_FILE
     fi
@@ -37,4 +37,3 @@ VALIDATE(){
 
 dnf install mysql-server -y
 VALIDATE $1 "Installing mysql-server"
-
